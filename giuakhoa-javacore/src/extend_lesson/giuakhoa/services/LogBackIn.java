@@ -1,30 +1,29 @@
 package extend_lesson.giuakhoa.services;
 import extend_lesson.giuakhoa.entities.User;
-
+import java.util.List;
 import java.util.Scanner;
 public class LogBackIn {
-    //changeusername
+    private List<User> users;
+    private Scanner scanner;
 
-    public class ChangeUsername {
-        private UserService userService;
-        private Scanner scanner;
-        private User user;
-
-        public ChangeUsername(UserService userService, Scanner scanner, User user) {
-            this.userService = userService;
-            this.scanner = scanner;
-            this.user = user;
-        }
-
-        public void execute() {
-            System.out.print("Nhập username mới: ");
-            String newUsername = scanner.nextLine();
-            if (userService.changeUsername(user.getUsername(), newUsername)) {
-                System.out.println("Thay đổi username thành công.");
-            } else {
-                System.out.println("Username đã tồn tại hoặc không hợp lệ.");
-            }
-        }
+    public LogBackIn(List<User> users, Scanner scanner) {
+        this.users = users;
+        this.scanner = scanner;
     }
 
+    public User execute() {
+        System.out.print("Username: ");
+        String username = scanner.nextLine();
+        System.out.print("Password: ");
+        String password = scanner.nextLine();
+
+        for (User user : users) {
+            if (user.getUsername().equals(username) && user.getPassword().equals(password)) {
+                System.out.println("Chào mừng " + username + ", bạn có thể thực hiện các công việc sau:");
+                return user;
+            }
+        }
+        System.out.println("Sai username hoặc mật khẩu.");
+        return null;
+    }
 }

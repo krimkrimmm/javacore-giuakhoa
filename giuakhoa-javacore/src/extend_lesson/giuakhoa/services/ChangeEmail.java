@@ -1,27 +1,49 @@
 package extend_lesson.giuakhoa.services;
 import extend_lesson.giuakhoa.entities.User;
-
+import java.util.List;
 import java.util.Scanner;
+import java.util.regex.Pattern;
 public class ChangeEmail {
-    private UserService userService;
-
+    private List<User> users;
     private Scanner scanner;
-    private User user;
 
-    public ChangeEmail(UserService userService, Scanner scanner, User user) {
-        this.userService = userService;
+    public ChangeEmail(List<User> users, Scanner scanner) {
+        this.users = users;
         this.scanner = scanner;
-        this.user = user;
     }
-    public void execute(){
 
-        System.out.println("nhập email mới:");
+    public void execute(User user) {
+        System.out.print("New Email: ");
         String newEmail = scanner.nextLine();
-        if (userService.changeEmail(user.getUsername(), newEmail)){
-            System.out.println("Đổi email thành công.");
-        }else {
-            System.out.println("Email đã tồn tại hoặc không hợp lệ.");
 
+        if (!isValidEmail(newEmail)) {
+            System.out.println("Email không hợp lệ.");
+            return;
         }
+
+        if (isEmailTaken(newEmail)) {
+            System.out.println("Email đã tồn tại.");
+            return;
+        }
+
+        user.setEmail(newEmail);
+        System.out.println("Đổi email thành công.");
+    }
+
+    private boolean isEmailTaken(String email) {
+        for (User user : users) {
+            if (user.getEmail().equals(email)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean isValidEmail(String email) {
+        String emailRegex = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$";
+        return Pattern.matches(emailRegex, email);
     }
 }
+
+
+

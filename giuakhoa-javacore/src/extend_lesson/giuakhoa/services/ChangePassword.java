@@ -1,28 +1,20 @@
 package extend_lesson.giuakhoa.services;
 import extend_lesson.giuakhoa.entities.User;
-
+import java.util.List;
 import java.util.Scanner;
 public class ChangePassword {
-    private UserService userService;
+
 
     private Scanner scanner;
-    private User user;
-
-    public ChangePassword(UserService userService, Scanner scanner, User user) {
-        this.userService = userService;
+    private List<User>users;
+    public ChangePassword(Scanner scanner) {
         this.scanner = scanner;
-        this.user = user;
+        this.users= users;
     }
-    public void execute(){
-
-        System.out.println("nhập mật khu mới:");
+    public void execute(User user) {
+        System.out.print("New Password: ");
         String newPassword = scanner.nextLine();
-        if (userService.changePassword(user.getUsername(),newPassword)){
-            System.out.println("Đổi mật khẩu thành công.");
-        }else{
-            System.out.println("mật khẩu không hợp lệ.");
-        }
+        user.setPassword(newPassword);
+        System.out.println("Đổi mật khẩu thành công.");
     }
 }
-
-
